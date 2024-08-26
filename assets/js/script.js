@@ -13,7 +13,7 @@ const $info = $('small')
 
 let messages = [];
 
-const SELECTED_MODEL = 'gemma-2b-it-q4f32_1-MLC';
+const SELECTED_MODEL = 'Llama-3.1-8B-Instruct-q4f32_1-MLC';
 
 const engine = await CreateWebWorkerMLCEngine(
     new Worker('./assets/js/worker.js', { type: 'module' }),
