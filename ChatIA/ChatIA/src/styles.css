@@ -3,6 +3,5 @@
 @tailwind utilities;
 
 
-body{
-    background-color: rgb(246, 251, 255);
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

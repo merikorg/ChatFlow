@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ChatFlow';
+
+  toggleMode: boolean = false;
+
+  toggleTheme() {
+    this.toggleMode = !this.toggleMode; 
+  }
 }
