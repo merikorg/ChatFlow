@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ThemeService } from './core/services/theme/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ChatFlow';
-
   toggleMode: boolean = false;
 
-  toggleTheme() {
-    this.toggleMode = !this.toggleMode; 
+  constructor(private themeService: ThemeService) {
+    this.themeService.currentTheme.subscribe(isDarkMode => {
+      this.toggleMode = isDarkMode;
+    });
   }
+
+
+  
 }

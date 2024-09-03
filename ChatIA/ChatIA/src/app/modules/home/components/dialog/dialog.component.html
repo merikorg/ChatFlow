@@ -7,18 +7,24 @@
       <h2 class="text-xl font-semibold">Anuncio!</h2>
     </div>
     <div class="p-4">
-      <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
-        <div class="bg-blue-500 h-4 rounded-full" [style.width.%]="progress"></div>
+      <div class="w-full bg-gray-200 rounded-full h-4 mb-4" *ngIf="viewProgressBar">
+        <div
+          class="bg-blue-500 h-4 rounded-full"
+          [style.width.%]="progress"
+        ></div>
       </div>
-      <p class="text-sm text-gray-600 text-center">{{ progress }}% Cargando modelo...</p>      
+      <p class="text-sm text-gray-600 text-center mt-5">
+        Estimado usuario, la inteligencia artificial utilizada en esta
+        plataforma se ejecuta directamente desde su computadora. Esto garantiza
+        que todas sus conversaciones sean completamente privadas.
+      </p>
+      <p class="text-sm text-gray-600 text-center mt-3">
+        Por favor, espere mientras el modelo de lenguaje se descarga y se carga
+        en su GPU.
+      </p>
     </div>
-    <div class="flex justify-end p-4 border-t">
-      <button
-        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        (click)="closeModal()"
-      >
-        Cerrar
-      </button>
+    <div class="flex justify-center p-4 border-t">
+      <p class="text-sm text-gray-400 text-center mt-2">{{ loadingMessage }}</p>
     </div>
   </div>
 </div>

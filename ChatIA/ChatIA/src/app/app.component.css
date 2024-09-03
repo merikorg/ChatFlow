@@ -3,10 +3,6 @@
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.mode_button:hover {
-    scale: 1.1;
-    transition: all 0.35s ease-in-out;
-}
 
 /*--------------------------------------dark-------------------------------*/
 
@@ -15,13 +11,6 @@
     color: white;
 }
 
-.dark:hover {
-    color: rgb(97, 97, 97);
-}
-
-.dark-mode .span{
-    color: white;
-}
 
 /*--------------------------------------light-------------------------------*/
 
@@ -30,8 +19,3 @@
     color:#4b5563;
 }
 
-.light {
-    &:hover {
-        color: rgb(244, 244, 244);
-    }
-}

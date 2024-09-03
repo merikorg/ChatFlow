@@ -1,13 +1,25 @@
 <header class="bg-transparent">
-    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        
-        <div class="flex items-center space-x-2">
-          <img class="h-8 w-8 rounded-3xl" src="../../../../assets/img/img-1.webp" alt="Logo">
-          <span class="text-lg font-semibold">ChatFlow</span>
-        </div>
-        
+  <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center space-x-2">
+        <img
+          class="h-8 w-8 rounded-3xl"
+          src="../../../../assets/img/img-1.webp"
+          alt="Logo"
+        />
+        <span class="text-lg font-semibold">ChatFlow</span>
       </div>
+
+      <button
+        class="mode_button"
+        (click)="toggleTheme()"
+        [title]="toggleMode ? 'Light Mode' : 'Dark Mode'"
+        [ngClass]="toggleMode ? 'light' : 'dark'"
+      >
+        <i class="material-icons">{{
+          toggleMode ? "light_mode" : "dark_mode"
+        }}</i>
+      </button>
     </div>
+  </div>
 </header>
-  

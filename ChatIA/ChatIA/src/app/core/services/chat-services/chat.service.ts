@@ -1,60 +1,81 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { CreateWebWorkerMLCEngine } from '@mlc-ai/web-llm';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ChatService {
-  private messagesSubject = new BehaviorSubject<any[]>([]);
-  messages$ = this.messagesSubject.asObservable();
+  private engine: any;
+  private messages: Array<{ role: string; content: string }> = [];
+  private readonly SELECTED_MODEL = 'Llama-3.1-8B-Instruct-q4f32_1-MLC';
 
-  private progressSubject = new BehaviorSubject<number>(0);
-  progress$ = this.progressSubject.asObservable();
-
-  engine: any;
-  private SELECTED_MODEL = 'Llama-3.1-8B-Instruct-q4f32_1-MLC';
+  public loadProgress = new BehaviorSubject<string>('Cargando...');
 
   constructor() {
     this.initializeEngine();
   }
 
   async initializeEngine() {
-    this.engine = await CreateWebWorkerMLCEngine(
-      new Worker('./assets/js/worker.js', { type: 'module' }),
-      this.SELECTED_MODEL,
-      {
-        initProgressCallback: (info) => {
-          this.progressSubject.next(info.progress * 100);
-        }
-      }
-    );
+    try {
+      const worker = new Worker(new URL('../worker/worker.worker', import.meta.url), { type: 'module' });
 
-    this.progressSubject.next(100);
+      this.engine = await CreateWebWorkerMLCEngine(worker, this.SELECTED_MODEL, {
+        initProgressCallback: (info: any) => {
+          const progressText = `${info.text}%`;
+          this.loadProgress.next(progressText);
+          if (info.progress === 1) {
+            this.loadProgress.next('Modelo cargado');
+          }
+        },
+      });
+    } catch (error) {
+      console.error('Error inicializando el motor:', error);
+      this.loadProgress.next('Error al cargar el modelo');
+    }
   }
 
-  async sendMessage(userMessage: string) {
-    const messages = this.messagesSubject.getValue();
+  getBotResponse(userMessage: string): Observable<string> {
+    return new Observable<string>((observer) => {
+      if (!this.engine) {
+        observer.error('El motor no está inicializado.');
+        return;
+      }
 
-    messages.push({ role: 'user', content: userMessage });
-    this.messagesSubject.next(messages);
+      this.messages.push({ role: 'user', content: userMessage });
 
-    const chunks = await this.engine.chat.completions.create({
-      messages,
-      stream: true
-    });
+      this.engine.chat.completions.create({
+        messages: this.messages,
+        stream: true, // Stream para recibir fragmentos de la respuesta
+      }).then(async (chunks: any) => {
+        let reply = '';
 
-    let replay = '';
-    for await (const chunk of chunks) {
-      const choice = chunk.choices[0];
-      const content = choice?.delta?.content ?? '';
-      replay += content;
+        try {
+          // Procesar cada fragmento de la respuesta
+          for await (const chunk of chunks) {
+            const choice = chunk.choices[0];
+            const content = choice?.delta?.content ?? '';
+            reply += content;
 
-      messages.push({
-        role: 'assistant',
-        content: replay
+            // Emitir el fragmento actual a los observadores
+            observer.next(content);
+          }
+
+          // Una vez completada la respuesta, agregarla al historial de mensajes
+          this.messages.push({
+            role: 'assistant',
+            content: reply,
+          });
+
+          // Completar el observable
+          observer.complete();
+        } catch (error) {
+          observer.error(error);
+        }
+      }).catch((error: any) => {
+        observer.error(error);
       });
-      this.messagesSubject.next([...messages]);
-    }
+    });
   }
 }

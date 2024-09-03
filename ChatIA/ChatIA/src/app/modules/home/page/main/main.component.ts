@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
+
 export class MainComponent {
   constructor() {}
 

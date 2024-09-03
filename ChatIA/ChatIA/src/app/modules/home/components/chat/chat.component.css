@@ -1,0 +1,51 @@
+.send {
+    line-height: inherit;
+}
+
+main {
+    height: 83vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+main::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+main::-webkit-scrollbar-button {
+    width: 30px;
+    height: 30px;
+}
+
+main::-webkit-scrollbar-thumb {
+    background: #cfcfcf;
+    border: 0px none #ffffff;
+    border-radius: 11px;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+    background: #e0e0e0;
+}
+
+main::-webkit-scrollbar-thumb:active {
+    background: #8a8a8a;
+}
+
+main::-webkit-scrollbar-track {
+    background: #666666;
+    border: 0px none #ffffff;
+    border-radius: 3px;
+}
+
+main::-webkit-scrollbar-track:hover {
+    background: #666666;
+}
+
+main::-webkit-scrollbar-track:active {
+    background: #333333;
+}
+
+main::-webkit-scrollbar-corner {
+    background: transparent;
+}

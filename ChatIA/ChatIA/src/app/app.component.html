@@ -3,12 +3,4 @@
   [ngClass]="{ 'dark-mode': toggleMode, 'light-mode': !toggleMode }"
 >
   <router-outlet></router-outlet>
-  <button
-    class="fixed right-12 top-24 mode_button"
-    (click)="toggleTheme()"
-    [title]="toggleMode ? 'Light Mode' : 'Dark Mode'"
-    [ngClass]="toggleMode ? 'light' : 'dark'"
-  >
-    <i class="material-icons">{{ toggleMode ? "light_mode" : "dark_mode" }}</i>
-  </button>
 </div>

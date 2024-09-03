@@ -1,4 +1,68 @@
-<main>
-  <ul></ul>
-  <small>&nbsp;</small>
+<main class="flex flex-col my-4 w-11/12 md:w-5/6 lg:w-6/12 mx-auto">
+  <ul
+    class="flex-1 flex-col space-y-4  px-4 py-6 w-full"
+  >
+    <li
+      *ngFor="let message of messages"
+      class="flex items-start space-x-2"
+      [ngClass]="{
+        'justify-end': message.who === 'Tú',
+        'justify-start': message.who !== 'Tú'
+      }"
+    >
+      <span
+        class="font-semibold"
+        [ngClass]="isDarkMode ? 'text-white' : 'text-gray-700'"
+      >
+        {{ message.who }}:
+      </span>
+      <p
+        class="max-w-xs p-2 rounded-lg"
+        [ngClass]="{
+          'self-end': message.who === 'Tú',
+          'self-start': message.who !== 'Tú',
+          'bg-gray-700 text-white': isDarkMode && message.who === 'Tú',
+          'bg-gray-500 text-white': isDarkMode && message.who !== 'Tú',
+          'bg-cyan-500 text-white': !isDarkMode && message.who === 'Tú',
+          'bg-gray-200 text-gray-900': !isDarkMode && message.who !== 'Tú'
+        }"
+      >
+        {{ message.text }}
+      </p>
+    </li>
+  </ul>
+
+  <form (ngSubmit)="sendMessage()" class="flex justify-center">
+    <div
+      class="fixed flex bottom-5 items-center py-2 px-5 rounded-full overflow-hidden mx-auto w-11/12 md:w-5/6 lg:w-2/5"
+      [ngClass]="isDarkMode ? 'bg-gray-700' : 'bg-gray-200'"
+    >
+      <textarea
+        #messageInput
+        [(ngModel)]="userMessage"
+        [disabled]="disabledInput"
+        placeholder="Envía un mensaje a ChatFlow"
+        name="messageInput"
+        class="flex-1 h-10 bg-transparent focus:outline-none resize-none overflow-y-auto ml-9"
+        [ngClass]="
+          isDarkMode
+            ? 'text-white placeholder-gray-400'
+            : 'text-black placeholder-gray-600'
+        "
+        rows="1"
+        (input)="adjustTextareaHeight()"
+        style="max-height: 150px"
+        (keydown.enter)="handleEnterKey($event)"
+      ></textarea>
+      <button
+        [disabled]="!userMessage.trim()"
+        [ngClass]="userMessage.trim() ? 'hover:text-gray-300' : ''"
+        type="submit"
+        class="rounded-full disabled:opacity-50 ml-2"
+        [ngClass]="isDarkMode ? 'text-white' : 'text-black'"
+      >
+        <i class="material-icons send">send</i>
+      </button>
+    </div>
+  </form>
 </main>
