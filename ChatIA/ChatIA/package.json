@@ -28,6 +28,7 @@
     "rxjs": "~7.5.0",
     "styled-components": "^6.1.12",
     "tslib": "^2.3.0",
+    "vercel": "^37.3.0",
     "zone.js": "~0.13.3"
   },
   "devDependencies": {
